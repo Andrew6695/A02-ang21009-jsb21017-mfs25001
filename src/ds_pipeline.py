@@ -45,6 +45,10 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled  = scaler.transform(X_test)
 
+# log transform target
+y_train_log = np.log1p(y_train)
+y_test_log  = np.log1p(y_test)
+
 # train MLPRegressor
 mlp = MLPRegressor(
     random_state=42,
@@ -57,13 +61,13 @@ mlp = MLPRegressor(
     validation_fraction=0.2,
     early_stopping=True
 )
-mlp.fit(X_train_scaled, y_train)
+mlp.fit(X_train_scaled, y_train_log)
 
-# predict
-y_pred_train = mlp.predict(X_train_scaled)
-y_pred_test  = mlp.predict(X_test_scaled)
+# predict 
+y_pred_train = np.expm1(mlp.predict(X_train_scaled))
+y_pred_test  = np.expm1(mlp.predict(X_test_scaled))
 
-# metrics
+# metrics 
 print("train R2:", r2_score(y_train, y_pred_train))
 print("train MAE:", mean_absolute_error(y_train, y_pred_train))
 print("test  R2:", r2_score(y_test, y_pred_test))
