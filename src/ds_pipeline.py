@@ -48,9 +48,11 @@ X_test_scaled  = scaler.transform(X_test)
 # train MLPRegressor
 mlp = MLPRegressor(
     random_state=42,
-    hidden_layer_sizes=(10, 5),   # custom hyperparameter
-    max_iter=200,
-    batch_size=1000,
+    hidden_layer_sizes=(64, 32), # retuning capacity
+    alpha=1e-4, # regularization
+    learning_rate_init=1e-3, # step size
+    max_iter=1000, # allowing for more training
+    batch_size=256,
     activation="relu",
     validation_fraction=0.2,
     early_stopping=True
@@ -68,6 +70,9 @@ print("test  R2:", r2_score(y_test, y_pred_test))
 print("test  MAE:", mean_absolute_error(y_test, y_pred_test))
 
 # scatter + reference line
+import os
+os.makedirs("figures", exist_ok=True)
+
 def scatter_with_reference_save(y_true, y_pred, title, out_path):
     plt.figure(figsize=(6,6))
     plt.scatter(y_true, y_pred, alpha=0.3, s=10)
