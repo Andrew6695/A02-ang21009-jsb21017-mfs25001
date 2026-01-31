@@ -18,7 +18,7 @@ Specifically, the pipeline:
   - test_actual_vs_pred.png
 - README.md
 
-## How to Run the Project
+## How to Run the Project (Within VS Code)
 
 ### 1. Install dependencies
 Make sure you have Python 3 installed, then install the required packages:
